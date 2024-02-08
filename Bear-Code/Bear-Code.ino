@@ -1,4 +1,5 @@
- // Code setup
+//shared with Mr Hansen successfully :)
+// Code setup
 const byte LEDPIN = 13;
 const byte PAWPIN1 = 1;
 const byte PAWPIN2 = 2;
