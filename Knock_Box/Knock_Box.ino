@@ -1,9 +1,9 @@
 // 21291
 #include <Servo.h>
 
-const byte MICROPIN = 2; 
+const byte MICROPIN = 2;
 const byte LEDPIN = 13;
-const byte SERVOPIN = 3;
+const byte SERVOPIN = 4;
 const byte BTNPIN = 1;
 
 Servo latch; 
