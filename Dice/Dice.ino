@@ -1,5 +1,10 @@
+
+
 const byte BTNPIN = 1;
 const byte POTPIN = A1;
+const byte NOISEPIN = A0;
+
+AdaFruit_LiquidCrystal screen(0);
 
 void setup() {
   // put your setup code here, to run once:
