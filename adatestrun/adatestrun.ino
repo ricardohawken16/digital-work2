@@ -28,6 +28,10 @@ void loop() {
   delay(500);
   // Turn on the display:
   lcd.display();
+  if (screen.begin(16,2)) {
+    Seiral.println("couldn't start the screen? check wiring");
+    while(1);
+  }
   
   delay(500);
   if (digitalRead(BTNPIN) == HIGH) {
