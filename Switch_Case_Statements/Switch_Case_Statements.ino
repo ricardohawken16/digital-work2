@@ -6,12 +6,12 @@ void setup() {
 pinMode(potPin, INPUT);
 Serial.begin(9600);
 }
-
+//HAN COMMENT I strongly suggest you use the auto format ctrl+T command to indent your code nicer
 void loop() {
   // put your main code here, to run repeatedly:
 int potValue = analogRead(potPin) / 255;
 
-if(potValue != lastPotValue); 
+if(potValue != lastPotValue) 
 {
 
 switch(potValue)
