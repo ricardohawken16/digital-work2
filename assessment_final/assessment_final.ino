@@ -1,4 +1,3 @@
-//Ricardo Hawken
 //21291
 
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
