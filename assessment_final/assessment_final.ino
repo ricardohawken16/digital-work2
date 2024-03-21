@@ -1,13 +1,20 @@
 //21291
-
+#include <SPI.h>
+#include <SD.h>
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
-
-const int TEMPSENSOR = 1
+#include <Wire.h>
+#include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
+Sd2Card card;
+SdVolume volume;
+SdFile root;
+const int TEMPSENSOR = 1;
 LPS25HB pressureSensor; // Create an object of the LPS25HB class
+const int chipSelect = 4;
 
 void setup()
 {
   Serial.begin(9600);
+  while (!Serial);
   Serial.println("LPS25HB Pressure Sensor Example 1 - Basic Readings");
   Serial.println();
 
@@ -23,57 +30,52 @@ void setup()
     while (1)
       ;
   }
+       // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+
+
+  Serial.print("Initializing SD card...");
+
+  // see if the card is present and can be initialized:
+  if (!SD.begin(chipSelect)) {
+    Serial.println("Card failed, or not present");
+    // don't do anything more:
+    while (1);
+  }
+  Serial.println("card initialized.");
 }
 
-void loop()
-{
-
-  #include <Wire.h>
-#include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
-OpenLog myLog; //Create instance
-
-int ledPin = LED_BUILTIN; //Status LED connected to digital pin 13
-
-const byte OpenLogAddress = 42; //Default Qwiic OpenLog I2C address
-{
-  pinMode(ledPin, OUTPUT);
-
+void loop(){
   Wire.begin();
-  myLog.begin(); //Open connection to OpenLog (no pun intended)
+ String dataString = "";
 
-  Serial.begin(9600); //9600bps is used for debug statements
-  Serial.println("Run OpenLog Append File Test");
-  myLog.println("Run OpenLog Append File Test");
+  // read three sensors and append to the string:
+  for (int analogPin = 0; analogPin < 3; analogPin++) {
+    int sensor = analogRead(analogPin);
+    dataString += String(sensor);
+    if (analogPin < 2) {
+      dataString += ",";
+    }
+  }
 
-  myLog.println("This is recorded to the default log file");
-  myLog.append("bottole_rocket.txt");
-  myLog.println("This is recorded to appendMe.txt");
-  myLog.println("If this file doesn't exist it is created and");
-  myLog.println("anything sent to OpenLog will be recorded to this file");
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  File dataFile = SD.open("datalog.txt", FILE_WRITE);
 
-  myLog.println();
-  myLog.println(F("Note: We can use the F(\"\") in sketches to move big print statements into program memory to save RAM"));
-  myLog.append("appendMe1.txt");
-  myLog.println(F("Note: We can use the F(\"\") in sketches to move big print statements into program memory to save RAM"));
-  myLog.println(F("Note: We can use the F(\"\") in sketches to move big print statements into program memory to save RAM"));
-  myLog.syncFile();
-
-  Serial.println("Done!");
-}
-
-void loop()
-{
-  //Blink the Status LED because we're done!
-  digitalWrite(ledPin, HIGH);
-  delay(1000);
-  digitalWrite(ledPin, LOW);
-  delay(1000);
-}
-#include <SparkFun_LPS25HB_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
-
-LPS25HB pressureSensor; // Create an object of the LPS25HB class
-
-{
+  // if the file is available, write to it:
+  if (dataFile) {
+    dataFile.println(dataString);
+    dataFile.close();
+    // print to the serial port too:
+    Serial.println(dataString);
+  }
+  // if the file isn't open, pop up an error:
+  else {
+    Serial.println("error opening datalog.txt");
+  }{
   Serial.begin(9600);
   Serial.println("LPS25HB Pressure Sensor Example 3 - Checking the Connection");
   Serial.println();
@@ -111,4 +113,4 @@ LPS25HB pressureSensor; // Create an object of the LPS25HB class
   Serial.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
 
   delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
-}
+  }
