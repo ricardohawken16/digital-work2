@@ -7,6 +7,7 @@
 Sd2Card card;
 SdVolume volume;
 SdFile root;
+const int PRESURESENSOR = 2;
 const int TEMPSENSOR = 1;
 LPS25HB pressureSensor; // Create an object of the LPS25HB class
 const int chipSelect = 4;
@@ -108,7 +109,7 @@ void loop(){
 }
 
   Serial.print("Pressure in hPa: ");
-  Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa
+  Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa  
   Serial.print(", Temperature (degC): ");
   Serial.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
 
