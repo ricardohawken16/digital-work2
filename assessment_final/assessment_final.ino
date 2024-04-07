@@ -14,14 +14,15 @@ const int chipSelect = 4;
 
 void setup()
 {
+  //TEACHER COMMENTS if this is where you begin Serial you don't need it on line 36 do you? but you might want to have the check up here
   Serial.begin(9600);
   while (!Serial);
-  Serial.println("LPS25HB Pressure Sensor Example 1 - Basic Readings");
+  Serial.println("LPS25HB Pressure Sensor Example 1 - Basic Readings");//TEACHER COMMENTS get rid of these from the examples you have pasted over
   Serial.println();
 
   Wire.begin();
   pressureSensor.begin(); // Begin links an I2C port and I2C address to the sensor, sets an I2C speed, begins I2C on the main board, and then sets default settings
-
+//TEACHER COMMENTS what does this chunk of code do?
   if (pressureSensor.isConnected() == false) // The library supports some different error codes such as "DISCONNECTED"
   {
     Serial.println("LPS25HB disconnected. Reset the board to try again.");     // Alert the user that the device cannot be reached
@@ -37,7 +38,7 @@ void setup()
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-
+//TEACHER COMMENTS give a comment explaining the purpose of this code 
   Serial.print("Initializing SD card...");
 
   // see if the card is present and can be initialized:
@@ -50,9 +51,10 @@ void setup()
 }
 
 void loop(){
-  Wire.begin();
+  Wire.begin();  //TEACHER COMMENTS shouldn't this happen in the setup()
  String dataString = "";
 
+   //TEACHER COMMENTS what is analogPin? you are reading A0 A1 and A2 but we don't have anything connected to them?
   // read three sensors and append to the string:
   for (int analogPin = 0; analogPin < 3; analogPin++) {
     int sensor = analogRead(analogPin);
@@ -62,6 +64,7 @@ void loop(){
     }
   }
 
+  //TEACHER COMMENTS I would think the stuff you have around line 100 or so would merge with this well
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
   File dataFile = SD.open("datalog.txt", FILE_WRITE);
@@ -76,7 +79,13 @@ void loop(){
   // if the file isn't open, pop up an error:
   else {
     Serial.println("error opening datalog.txt");
-  }{
+  }
+  
+  //*************************************************************************
+   //TEACHER COMMENTS It looks like this comes from the example code and is the tail end of the setup method and the start of the loop but 
+  //without the loop(){ part
+  //*************************************************************************
+  {
   Serial.begin(9600);
   Serial.println("LPS25HB Pressure Sensor Example 3 - Checking the Connection");
   Serial.println();
@@ -91,7 +100,7 @@ void loop(){
   {
     if (pressureSensor.getStatus() == 0x00)
     {
-      pressureSensor.begin();
+      pressureSensor.begin();  //TEACHER COMMENTS this starts the pressure sensor that you have checked in the last two if statements?! should it not be in the setup method
     } // If it is connected but not responding (for example after a hot-swap) then it may need to be re-initialized
     Serial.print("Connected. Sensor Status: ");
     Serial.print(pressureSensor.getStatus(), HEX); // Read the sensor status, the datasheet can explain what the various codes mean
@@ -102,12 +111,13 @@ void loop(){
   }
   else
   {
+     //TEACHER COMMENTS explain what this code is doing in a comment
     Serial.println("Disconnected");
     pressureSensor.begin();
   }
-  delay(100);
+  delay(100); //TEACHER COMMENTS why this delay? you have another one lower in your code?
 }
-
+//TEACHER COMMENTS explain what this code is doing in a comment
   Serial.print("Pressure in hPa: ");
   Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa  
   Serial.print(", Temperature (degC): ");
