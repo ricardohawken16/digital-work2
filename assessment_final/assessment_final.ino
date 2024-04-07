@@ -16,6 +16,8 @@ void setup()
 {
   //TEACHER COMMENTS if this is where you begin Serial you don't need it on line 36 do you? but you might want to have the check up here
   Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
   while (!Serial);
   Serial.println("LPS25HB Pressure Sensor Example 1 - Basic Readings");//TEACHER COMMENTS get rid of these from the examples you have pasted over
   Serial.println();
@@ -23,7 +25,7 @@ void setup()
   Wire.begin();
   pressureSensor.begin(); // Begin links an I2C port and I2C address to the sensor, sets an I2C speed, begins I2C on the main board, and then sets default settings
 //TEACHER COMMENTS what does this chunk of code do?
-  if (pressureSensor.isConnected() == false) // The library supports some different error codes such as "DISCONNECTED"
+  if (pressureSensor.isConnected() == false) // This line of code is to chek that the pressure sensor is connected, if not display false.
   {
     Serial.println("LPS25HB disconnected. Reset the board to try again.");     // Alert the user that the device cannot be reached
     Serial.println("Are you using the right Wire port and I2C address?");      // Suggest possible fixes
@@ -32,11 +34,7 @@ void setup()
     while (1)
       ;
   }
-       // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  
 
 //TEACHER COMMENTS give a comment explaining the purpose of this code 
   Serial.print("Initializing SD card...");
@@ -49,9 +47,10 @@ void setup()
   }
   Serial.println("card initialized.");
 }
+}
 
-void loop(){
-  Wire.begin();  //TEACHER COMMENTS shouldn't this happen in the setup()
+void loop() {
+
  String dataString = "";
 
    //TEACHER COMMENTS what is analogPin? you are reading A0 A1 and A2 but we don't have anything connected to them?
