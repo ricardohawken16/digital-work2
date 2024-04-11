@@ -4,13 +4,13 @@
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
 #include <Wire.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
+const int PRESURESENSOR = 2;
+const int TEMPSENSOR = 1;
+const int chipSelect = 4;
+LPS25HB pressureSensor; // Create an object of the LPS25HB class
 Sd2Card card;
 SdVolume volume;
 SdFile root;
-const int PRESURESENSOR = 2;
-const int TEMPSENSOR = 1;
-LPS25HB pressureSensor; // Create an object of the LPS25HB class
-const int chipSelect = 4;
 
 void setup()
 {
@@ -18,13 +18,10 @@ void setup()
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
-  while (!Serial);
-  Serial.println("LPS25HB Pressure Sensor Example 1 - Basic Readings");//TEACHER COMMENTS get rid of these from the examples you have pasted over
-  Serial.println();
+ 
 
   Wire.begin();
   pressureSensor.begin(); // Begin links an I2C port and I2C address to the sensor, sets an I2C speed, begins I2C on the main board, and then sets default settings
-//TEACHER COMMENTS what does this chunk of code do?
   if (pressureSensor.isConnected() == false) // This line of code is to chek that the pressure sensor is connected, if not display false.
   {
     Serial.println("LPS25HB disconnected. Reset the board to try again.");     // Alert the user that the device cannot be reached
@@ -114,12 +111,10 @@ void loop() {
     Serial.println("Disconnected");
     pressureSensor.begin();
   }
-  delay(100); //TEACHER COMMENTS why this delay? you have another one lower in your code?
 }
-//TEACHER COMMENTS explain what this code is doing in a comment
-  Serial.print("Pressure in hPa: ");
+  Serial.print("Pressure in hPa: "); //Pulling pressure sensor command from library
   Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa  
-  Serial.print(", Temperature (degC): ");
+  Serial.print(", Temperature (degC): ");// Pulling Temp sensor command from library
   Serial.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
 
   delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
