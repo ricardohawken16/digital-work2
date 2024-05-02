@@ -1,16 +1,12 @@
 //21291
-#include <SPI.h>
-#include <SD.h>
+
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
 #include <Wire.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
 const int PRESURESENSOR = 2;
 const int TEMPSENSOR = 1;
-const int chipSelect = 4;
 LPS25HB pressureSensor; // Create an object of the LPS25HB class
-Sd2Card card;
-SdVolume volume;
-SdFile root;
+OpenLog SD;
 
 void setup()
 {
@@ -37,11 +33,12 @@ void setup()
   Serial.print("Initializing SD card...");
 
   // see if the card is present and can be initialized:
-  if (!SD.begin(chipSelect)) {
+  if (!SD.begin()) {
     Serial.println("Card failed, or not present");
     // don't do anything more:
     while (1);
   }
+  SD.append("Ricardo.txt");
   Serial.println("card initialized.");
 }
 }
@@ -63,12 +60,9 @@ void loop() {
   //TEACHER COMMENTS I would think the stuff you have around line 100 or so would merge with this well
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
-  File dataFile = SD.open("datalog.txt", FILE_WRITE);
 
-  // if the file is available, write to it:
-  if (dataFile) {
-    dataFile.println(dataString);
-    dataFile.close();
+    SD.println(dataString);
+    SD.close();
     // print to the serial port too:
     Serial.println(dataString);
   }
@@ -111,11 +105,6 @@ void loop() {
     Serial.println("Disconnected");
     pressureSensor.begin();
   }
-}
-  Serial.print("Pressure in hPa: "); //Pulling pressure sensor command from library
-  Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa  
-  Serial.print(", Temperature (degC): ");// Pulling Temp sensor command from library
-  Serial.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
 
   delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
   }
