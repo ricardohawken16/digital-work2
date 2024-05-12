@@ -1,8 +1,8 @@
 //21291
 
-#include <SparkFun_LPS25HB_Arduino_Library.h>  // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
-#include <Wire.h>
-#include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
+#include <SparkFun_LPS25HB_Arduino_Library.h>  //LPS commands
+#include <Wire.h> //connecting components together automatically
+#include "SparkFun_Qwiic_OpenLog_Arduino_Library.h" //Openlog commands
 const int PRESURESENSOR = 2;
 const int TEMPSENSOR = 1;
 LPS25HB pressureSensor;  // Create an object of the LPS25HB class
@@ -43,7 +43,7 @@ void loop() {
   //millis();
   String dataString = "";
 
-  //TEACHER COMMENTS what is analogPin? you are reading A0 A1 and A2 but we don't have anything connected to them?
+  //analog pin = 0
   // read three sensors and append to the string:
   for (int analogPin = 0; analogPin < 3; analogPin++) {
     int sensor = analogRead(analogPin);
@@ -98,7 +98,7 @@ void ready(bool debug) {
     if (analogPin < 2) {
       dataString += ",";
     }
-  }
+  
 
 
   // open the file. note that only one file can be open at a time,
@@ -125,12 +125,13 @@ void ready(bool debug) {
       Serial.println(pressureSensor.getTemperature_degC());  // Get the temperature in degrees C by dividing the ADC count by 480
     }
 
+    
     Serial.println("Disconnected");  //Disconnecting and Restarting code since void loop is continuous
     pressureSensor.begin();
     delay(40);  // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
   }
-}
-else {
+
+}else {
 
   {
     millis();
