@@ -59,11 +59,14 @@ void loop() {
   } else {
     Serial.println("Disconnected");  // Alert if the sensor is disconnected
   }
-
   delay(40);  // Wait for 40 ms (corresponding to the sensor update rate)
+  
+  
+  ready(true); // Tells the code chunk if testing or flight is checked to false and true
 }
 
 void ready(bool debug) {
+  millis();
   String dataString = "";
 
   // Read three sensors and append to the string
