@@ -7,7 +7,7 @@ const int PRESSURE_SENSOR = 2;
 const int TEMP_SENSOR = 1;
 
 LPS25HB pressureSensor;  // Create an object of the LPS25HB class
-OpenLog SD;
+OpenLog SD; // Pulling sd card
 
 void setup() {
   Serial.begin(9600);  // Serial begins and sets data rate for code setup
@@ -34,6 +34,7 @@ void setup() {
 }
 
 void loop() {
+  
   String dataString = "";
 
   // Read three sensors and append to the string
@@ -49,10 +50,10 @@ void loop() {
   Serial.println(dataString);  // Print data to the serial port
 
   // Read and print pressure and temperature data from the pressure sensor
-  if (pressureSensor.isConnected() == true) {
-    Serial.print("Connected. Sensor Status: ");     // Check if the sensor is connected
+  if (pressureSensor.isConnected() == true) { // Powering on pressure sensor
+    Serial.print("Connected. Sensor Status: ");     // Writing pressure sensor status
     Serial.print(pressureSensor.getStatus(), HEX);  // Read the sensor status
-    Serial.print(", Pressure: ");
+    Serial.print(", Pressure: "); // Writing pressure in hpa
     Serial.print(pressureSensor.getPressure_hPa());  // Get the pressure reading in hPa
     Serial.print(", Temperature: ");
     Serial.println(pressureSensor.getTemperature_degC());  // Get the temperature in degrees C
