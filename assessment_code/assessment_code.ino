@@ -29,70 +29,39 @@ void setup() {
     while (1)
       ;
   }
+  SD.begin();
   SD.append("Ricardo.txt");
   Serial.println("Card initialized.");
 }
 
 void loop() {
-  
-  String dataString = "";
-
-  // Read three sensors and append to the string
-  for (int analogPin = 0; analogPin < 3; analogPin++) {
-    int sensor = analogRead(analogPin);
-    dataString += String(sensor);
-    if (analogPin < 2) {
-      dataString += ",";
-    }
-  }
-
-  SD.println(dataString);  // Save data to SD card
-  Serial.println(dataString);  // Print data to the serial port
-
-  // Read and print pressure and temperature data from the pressure sensor
-  if (pressureSensor.isConnected() == true) { // Powering on pressure sensor
-    Serial.print("Connected. Sensor Status: ");     // Writing pressure sensor status
-    Serial.print(pressureSensor.getStatus(), HEX);  // Read the sensor status
-    Serial.print(", Pressure: "); // Writing pressure in hpa
-    Serial.print(pressureSensor.getPressure_hPa());  // Get the pressure reading in hPa
-    Serial.print(", Temperature: ");
-    Serial.println(pressureSensor.getTemperature_degC());  // Get the temperature in degrees C
-  } else {
-    Serial.println("Disconnected");  // Alert if the sensor is disconnected
-  }
-  delay(40);  // Wait for 40 ms (corresponding to the sensor update rate)
-  
-  
-  ready(true); // Tells the code chunk if testing or flight is checked to false and true
+  ready(true); // Tells the code chunk if debug is true then it will only debug and only use serial monitor, if false we are launching and only using it for the sd to write 
+               // Otherwise the sd will give a error status
 }
 
 void ready(bool debug) {
-  millis();
-  String dataString = "";
-
-  // Read three sensors and append to the string
-  for (int analogPin = 0; analogPin < 3; analogPin++) {
-    int sensor = analogRead(analogPin);
-    dataString += String(sensor);
-    if (analogPin < 2) {
-      dataString += ",";
-    }
-  }
-
-  SD.println(dataString);  // Save data to SD card
-  Serial.println(dataString);  // Print data to the serial port
+ 
+// millis();
 
   // Read and print pressure and temperature data from the pressure sensor
-  if (pressureSensor.isConnected() == true) {
-    Serial.print("Connected. Sensor Status: ");     // Check if the sensor is connected
-    Serial.print(pressureSensor.getStatus(), HEX);  // Read the sensor status
+  if(debug){
+  (pressureSensor.isConnected()==true); { // Powering on sensor
+    Serial.print("Connected. Sensor Status: "); // Check if the sensor is connected
+    Serial.print(pressureSensor.getStatus(), HEX); // Read the sensor status
     Serial.print(", Pressure: ");
-    Serial.print(pressureSensor.getPressure_hPa());  // Get the pressure reading in hPa
+    Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa
     Serial.print(", Temperature: ");
-    Serial.println(pressureSensor.getTemperature_degC());  // Get the temperature in degrees C
-  } else {
-    Serial.println("Disconnected");  // Alert if the sensor is disconnected
-  }
+    Serial.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
 
-  delay(40);  // Wait for 40 ms (corresponding to the sensor update rate)
+  }
+  
+
+       SD.print(pressureSensor.getPressure_hPa());
+    SD.print(", ");
+    SD.print(pressureSensor.getTemperature_degC());
+    SD.print(", ");
+    SD.print(millis());
+    SD.println(); // To add a new line at the end
+  delay(40); // Code will take 40 millis to perform the next loop again
+  }
 }
