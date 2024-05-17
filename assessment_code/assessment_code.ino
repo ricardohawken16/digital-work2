@@ -30,7 +30,7 @@ void setup() {
       ;
   }
   SD.begin();
-  SD.append("Ricardo.txt");
+  SD.append("Ricardo.csv");
   Serial.println("Card initialized.");
 }
 
@@ -46,8 +46,7 @@ void ready(bool debug) {
   // Read and print pressure and temperature data from the pressure sensor
   if(debug){
   (pressureSensor.isConnected()==true); { // Powering on sensor
-    Serial.print("Connected. Sensor Status: "); // Check if the sensor is connected
-    Serial.print(pressureSensor.getStatus(), HEX); // Read the sensor status
+    Serial.print("millis: ");
     Serial.print(", Pressure: ");
     Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa
     Serial.print(", Temperature: ");
@@ -55,12 +54,13 @@ void ready(bool debug) {
 
   }
   
-
-       SD.print(pressureSensor.getPressure_hPa());
+    
+    SD.print(millis());
+    SD.print(", ");
+    SD.print(pressureSensor.getPressure_hPa());
     SD.print(", ");
     SD.print(pressureSensor.getTemperature_degC());
     SD.print(", ");
-    SD.print(millis());
     SD.println(); // To add a new line at the end
   delay(40); // Code will take 40 millis to perform the next loop again
   }
