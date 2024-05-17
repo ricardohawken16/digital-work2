@@ -29,7 +29,7 @@ void setup() {
   SD.begin();                           // Start the sd card writing process
   SD.append("Ricardo.txt");             // Named the sd card my name so it is easier to tell if its my code from the sd card
   Serial.println("Card initialized.");  // Sd card is in and working properly
-  SD.syncFile();                        // syncs every sd.print and pushes it to a singular line once the code has done its loop
+  SD.syncFile();                        // Syncs every sd.print and pushes it to a singular line once the code has done its loop
 }
 
 void loop() {
@@ -57,7 +57,7 @@ void ready(bool debug) {  //My method for my debug function
     SD.print(pressureSensor.getPressure_hPa());        // Gets pressure in hpa and print to the sd
     SD.print(", ");                                    // Formats csv file
     SD.println(pressureSensor.getTemperature_degC());  // Get temperture in degrees and print to the sd
-    SD.syncFile();
-    delay(40);  // Code will take 40 millis to perform the next loop again
+    SD.syncFile();                                     // Syncs every sd.print and pushes it to a singular line once the code has done its loop
+    delay(40);                                         // Code will take 40 millis to perform the next loop again
   }
 }
