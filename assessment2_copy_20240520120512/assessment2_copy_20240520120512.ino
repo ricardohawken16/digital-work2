@@ -44,7 +44,7 @@ void ready(bool debug) {  //My method for my debug function
   if (debug) {
     (pressureSensor.isConnected() == true);
     {                                                  // Powering on sensor
-      Serial.print(" millis: ");                       // Get millis
+      Serial.print(" Millis: ");                       // Get millis
       Serial.print(millis());                          // Display millis
       Serial.print(", Pressure: ");                    // Write pressure
       Serial.print(pressureSensor.getPressure_hPa());  // Get the pressure reading in hPa
